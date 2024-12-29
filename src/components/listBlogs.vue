@@ -1,5 +1,17 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 
+const listArticles = ref([])
+
+async function getData() {
+  const res = await fetch("http://localhost:8080/articles")
+  const finalRes = await res.json();
+  listArticles.value = finalRes;
+}
+
+onMounted(() => {
+  getData();
+})
 </script>
 
 <template>
@@ -13,8 +25,8 @@
       <p class="leading-relaxed">Example content</p>
 
       <div class="flex gap-2 mt-4">
-        <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md text-white transition-colors">Update</button>
-        <button class="px-4 py-2 bg-red-500 hover:bg-red-700 rounded-md text-white transition-colors">Delete</button>
+        <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md text-white transition-colors">Update</button>
+        <button class="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md text-white transition-colors">Delete</button>
       </div>
     </div>
   </div>
