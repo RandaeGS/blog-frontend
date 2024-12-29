@@ -1,5 +1,6 @@
 <script setup>
 import listBlogs from './components/listBlogs.vue'
+import createBlog from './components/createBlog.vue'
 
 </script>
 
@@ -14,7 +15,13 @@ import listBlogs from './components/listBlogs.vue'
     </nav>
 
     <main>
-      <listBlogs />
+      <div class="flex-1 flex justify-center p-6 bg-slate-100 shadow-md min-w-max items-center">
+        <div class="w-full max-w-4xl mx-auto">
+
+          <listBlogs />
+          <createBlog />
+        </div>
+      </div>
     </main>
   </div>
 </template>
