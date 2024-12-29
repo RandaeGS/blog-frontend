@@ -1,7 +1,19 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import listBlogs from './components/listBlogs.vue'
 import createBlog from './components/createBlog.vue'
 
+const listArticles = ref([])
+
+async function getData() {
+  const res = await fetch("http://localhost:8080/articles")
+  const finalRes = await res.json();
+  listArticles.value = finalRes;
+}
+
+onMounted(() => {
+  getData();
+})
 </script>
 
 <template>
@@ -19,7 +31,6 @@ import createBlog from './components/createBlog.vue'
         <div class="w-full max-w-4xl mx-auto">
 
           <listBlogs />
-          <createBlog />
         </div>
       </div>
     </main>
