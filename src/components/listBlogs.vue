@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import Swal from 'sweetalert2'
 
 const listArticles = ref([])
 
@@ -12,6 +13,42 @@ async function getData() {
 onMounted(() => {
   getData();
 })
+
+async function deleteArticle(articleId) {
+  try {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Delete not reversible",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel"
+    })
+
+    if (result.isConfirmed) {
+      const res = await fetch(`http://localhost:8080/articles/${Number(articleId)}`, { method: "DELETE" })
+      await Swal.fire({
+        title: "Done!",
+        text: "Article successlly deleted!",
+        icon: "success"
+      })
+
+      if (!res.ok) {
+        throw new Error("Error deleting article")
+      }
+
+      getData();
+    }
+  } catch (error) {
+    await Swal.fire({
+      title: "Error",
+      text: "Article could not be deleted!",
+      icon: "error"
+    })
+
+  }
+}
+
 </script>
 
 <template>
@@ -31,7 +68,8 @@ onMounted(() => {
 
       <div class="flex gap-2 mt-4">
         <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-md text-white transition-colors">Update</button>
-        <button class="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md text-white transition-colors">Delete</button>
+        <button @click="deleteArticle(article.id)"
+          class="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md text-white transition-colors">Delete</button>
       </div>
     </div>
   </div>
